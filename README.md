@@ -26,9 +26,6 @@ This is a simple weather application that allows users to check the current weat
 
 You can try the live demo of the Weather App [here](https://weather-app-sooty-nine-32.vercel.app/).
 
-## Screenshots
-
-
 
 ## How to Use
 
