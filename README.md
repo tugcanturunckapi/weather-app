@@ -22,6 +22,14 @@ This is a simple weather application that allows users to check the current weat
 ![Screenshot](screenshots/Screenshot_2.png) 
 
 
+## Live Demo
+
+You can try the live demo of the Weather App [here](https://weather-app-sooty-nine-32.vercel.app/).
+
+## Screenshots
+
+
+
 ## How to Use
 
 1. Clone the repository:
