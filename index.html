@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App- Tugcan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="search">
+        <input type="text" placeholder="enter city name" spellcheck="false" />
+        <button><img src="images/search.png" alt="" /></button>
+      </div>
+
+      <div class="error">
+        <img src="images/cross.png" alt="" class="weather-icon" />
+        <h1 class="error-text">Invalid City Name</h1>
+      </div>
+
+      <div class="weather">
+        <img src="images/rain.png" alt="" class="weather-icon" />
+        <h1 class="temp">22°c</h1>
+        <h2 class="city">New York</h2>
+        <div class="details">
+          <div class="col">
+            <img src="images/humidity.png" alt="" />
+            <div>
+              <p class="humidity">50%</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+          <div class="col">
+            <img src="images/wind.png" alt="" />
+            <div>
+              <p class="wind">15 km/h</p>
+              <p>Wind Speed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const apiKey = "96f8f25d865daffd78e49f8b6fc7aaf4";
+      const apiUrl =
+        "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+      const searchBox = document.querySelector(".search input");
+      const searchBtn = document.querySelector(".search button");
+      const weatherIcon = document.querySelector(".weather-icon");
+
+      async function checkWeather(city) {
+  const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+  if (response.status == 404) {
+    const errorDiv = document.querySelector(".error");
+    errorDiv.classList.add("show");
+    document.querySelector(".weather").classList.remove("show");
+    weatherIcon.src = "images/cross.png"; // Hatalı şehir durumunda hata ikonunu göster
+  } else {
+    var data = await response.json();
+
+    console.log(data);
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML =
+      Math.round(data.main.temp) + "°c";
+    document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+    document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+
+    if (data.weather[0].main == "Clouds") {
+      weatherIcon.src = "images/clouds.png";
+    } else if (data.weather[0].main == "Clear") {
+      weatherIcon.src = "images/clear.png";
+    } else if (data.weather[0].main == "Rain") {
+      weatherIcon.src = "images/rain.png";
+    } else if (data.weather[0].main == "Drizzle") {
+      weatherIcon.src = "images/drizzle.png";
+    } else if (data.weather[0].main == "Mist") {
+      weatherIcon.src = "images/mist.png";
+    } else if (data.weather[0].main == "Snow") {
+      weatherIcon.src = "images/snow.png";
+    }
+
+    document.querySelector(".weather").classList.add("show");
+    document.querySelector(".error").classList.remove("show");
+  }
+}
+
+
+      searchBtn.addEventListener("click", () => {
+        checkWeather(searchBox.value);
+      });
+
+      searchBox.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+          checkWeather(searchBox.value);
+        }
+      });
+
+      document.addEventListener("mousemove", function (e) {
+        const xPos = (e.clientX / window.innerWidth) * 100;
+        const yPos = (e.clientY / window.innerHeight) * 100;
+        const style = `
+                @keyframes AnimationName {
+                    0% { background-position: ${xPos}% ${yPos}% }
+                    50% { background-position: ${100 - xPos}% ${100 - yPos}% }
+                    100% { background-position: ${xPos}% ${yPos}% }
+                }
+            `;
+        const styleElement = document.createElement("style");
+        styleElement.innerHTML = style;
+        document.head.appendChild(styleElement);
+      });
+    </script>
+  </body>
+</html>
